@@ -1,0 +1,14 @@
+import { Link } from "@tanstack/react-router";
+import { Bookmark, ExternalLink, FileText, UserRound } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle } from "@/components/ui/sheet";
+import { useAppState } from "@/components/app/app-context";
+import { StatusBadge } from "@/components/app/status-badge";
+import type { Person } from "@/lib/demo-data";
+import { cn } from "@/lib/utils";
+
+export function PersonPanel({ person, onClose }:{person:Person|undefined; onClose:()=>void}) {
+ const {favorites,toggleFavorite}=useAppState();
+ return <Sheet open={!!person} onOpenChange={(open)=>{if(!open)onClose()}}><SheetContent className="w-full overflow-y-auto p-0 sm:max-w-xl">{person && <><SheetHeader className="border-b px-6 py-5 pr-14"><div className="flex items-center gap-2 text-xs font-medium uppercase text-muted-foreground"><FileText className="size-4"/>Запись {person.id}</div><SheetTitle className="text-xl">{person.name}</SheetTitle><SheetDescription>Быстрый просмотр сведений</SheetDescription></SheetHeader><div className="p-6"><div className="flex gap-4 border-b pb-6"><img src={person.photo} width={816} height={816} loading="lazy" className="size-28 rounded-sm object-cover" alt={`Фотография: ${person.name}`} /><div className="min-w-0 space-y-2"><StatusBadge status={person.status}/><p className="text-sm text-muted-foreground">{person.birthDate} · {person.citizenship}</p><p className="text-xs font-medium text-muted-foreground">Дело {person.caseNumber}</p></div></div><InfoSection title="Идентификационные сведения" rows={[["Пол",person.gender],["Документ",person.document],["Гражданство",person.citizenship]]}/><InfoSection title="Сведения о розыске" rows={[["Инициатор",person.initiator],["Основание",person.basis],["Дата добавления",person.added],["Обновлено",person.updated]]}/><div className="mt-6 flex flex-wrap gap-2"><Button onClick={()=>toggleFavorite(person.id)} variant={favorites.includes(person.id)?"secondary":"outline"}><Bookmark className={cn(favorites.includes(person.id)&&"fill-current")}/>{favorites.includes(person.id)?"В избранном":"В избранное"}</Button><Button asChild><Link to="/records/$recordId" params={{recordId:person.id}}>Подробнее<ExternalLink/></Link></Button></div><p className="mt-6 border-t pt-4 text-xs text-muted-foreground">Все сведения и изображения в этой записи вымышлены.</p></div></>}</SheetContent></Sheet>;
+}
+export function InfoSection({title,rows}:{title:string;rows:string[][]}){return <section className="border-b py-5"><h3 className="mb-4 text-sm font-semibold">{title}</h3><dl className="grid gap-3 sm:grid-cols-2">{rows.map(([key,value])=><div key={key}><dt className="text-xs text-muted-foreground">{key}</dt><dd className="mt-1 text-sm font-medium">{value}</dd></div>)}</dl></section>}

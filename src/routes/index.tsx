@@ -1,24 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { ArrowRight, Clock3, FileSearch, Heart, Plus, RefreshCw, Search, ShieldAlert, UserRound } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { PageHeading } from "@/components/app/page-heading";
+import { StatusBadge } from "@/components/app/status-badge";
+import { historyItems, people } from "@/lib/demo-data";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
-function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
-}
+export const Route=createFileRoute("/")({head:()=>({meta:[{title:"Главная — ИС Розыск"},{name:"description",content:"Рабочая панель информационной системы розыска"},{property:"og:title",content:"Главная — ИС Розыск"},{property:"og:description",content:"Рабочая панель информационной системы розыска"},{property:"og:type",content:"website"},{name:"twitter:card",content:"summary_large_image"}]}),component:Dashboard});
+function Dashboard(){const stats=[{label:"Всего записей",value:"128 462",note:"в едином реестре",icon:FileSearch},{label:"Новые записи",value:"184",note:"за последние 7 дней",icon:Plus},{label:"Обновлено сегодня",value:"326",note:"на 12:30",icon:RefreshCw},{label:"Активные ориентировки",value:"4 821",note:"требуют контроля",icon:ShieldAlert}];return <><PageHeading eyebrow="Обзор" title="Информационная система розыска" description="Сводная информация и быстрый доступ к основным операциям." actions={<div className="flex items-center gap-2 text-xs text-muted-foreground"><span className="size-2 rounded-full bg-status-active-foreground"/>Система работает штатно</div>}/><section className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{stats.map(({label,value,note,icon:Icon})=><article key={label} className="border bg-card p-4"><div className="flex items-start justify-between"><p className="text-xs font-medium text-muted-foreground">{label}</p><Icon className="size-4 text-primary"/></div><p className="mt-3 text-2xl font-semibold">{value}</p><p className="mt-1 text-xs text-muted-foreground">{note}</p></article>)}</section><section className="mt-6 grid gap-5 xl:grid-cols-[1.2fr_1fr_0.75fr]"><Panel title="Последние поисковые запросы" action={<Link to="/history" className="text-xs font-medium text-primary">Вся история</Link>}>{historyItems.slice(0,3).map(h=><div key={h.time} className="flex items-center gap-3 border-t px-4 py-3 first:border-t-0"><Clock3 className="size-4 text-muted-foreground"/><div className="min-w-0 flex-1"><p className="truncate text-sm font-medium">{h.query}</p><p className="text-xs text-muted-foreground">{h.date}, {h.time}</p></div><span className="text-xs font-semibold">{h.count}</span></div>)}</Panel><Panel title="Недавно просмотренные">{people.slice(0,3).map(p=><Link key={p.id} to="/records/$recordId" params={{recordId:p.id}} className="flex items-center gap-3 border-t px-4 py-3 first:border-t-0 hover:bg-muted"><img src={p.photo} width={816} height={816} loading="lazy" alt="" className="size-9 rounded-sm object-cover"/><div className="min-w-0 flex-1"><p className="truncate text-sm font-medium">{p.name}</p><p className="text-xs text-muted-foreground">{p.id}</p></div><StatusBadge status={p.status}/></Link>)}</Panel><Panel title="Быстрые действия"><div className="grid gap-2 p-4"><Button asChild className="justify-start"><Link to="/search"><Search/>Начать поиск</Link></Button><Button asChild variant="outline" className="justify-start"><Link to="/advanced-search"><FileSearch/>Расширенный поиск</Link></Button><Button asChild variant="outline" className="justify-start"><Link to="/favorites"><Heart/>Открыть избранное</Link></Button></div></Panel></section></>}
+function Panel({title,action,children}:{title:string;action?:React.ReactNode;children:React.ReactNode}){return <section className="border bg-card"><header className="flex h-12 items-center justify-between border-b px-4"><h2 className="text-sm font-semibold">{title}</h2>{action}</header>{children}</section>}
