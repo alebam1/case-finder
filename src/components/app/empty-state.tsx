@@ -1,0 +1,2 @@
+import { SearchX } from "lucide-react";
+export function EmptyState({title="Ничего не найдено",description="Проверьте параметры или расширьте условия поиска."}:{title?:string;description?:string}){return <div className="grid min-h-64 place-items-center border border-dashed bg-card p-8 text-center"><div><span className="mx-auto mb-4 grid size-11 place-items-center rounded-sm bg-muted text-muted-foreground"><SearchX/></span><h3 className="font-semibold">{title}</h3><p className="mt-2 text-sm text-muted-foreground">{description}</p></div></div>}
