@@ -4,6 +4,8 @@ import { useState, type ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
+import { AIAssistantButton } from "@/components/ai/AIAssistantButton";
+import { AIAssistantPanel } from "@/components/ai/AIAssistantPanel";
 
 const navigation = [
   { to:"/", label:"Главная", icon:Home }, { to:"/search", label:"Поиск", icon:Search },
@@ -23,10 +25,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setMobileOpen(true)} aria-label="Открыть меню"><Menu /></Button>
         <div className="min-w-0 flex-1"><p className="truncate text-sm font-semibold">Информационная система розыска</p><p className="hidden text-xs text-muted-foreground sm:block">Служебный контур · демонстрационный режим</p></div>
         <div className="relative hidden w-full max-w-md md:block"><Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground"/><Input className="pl-9" placeholder="Глобальный поиск по ФИО, документу, номеру" aria-label="Глобальный поиск" /></div>
+        <AIAssistantButton />
         <Button variant="ghost" size="icon" className="relative" aria-label="Уведомления"><Bell/><span className="absolute right-2 top-2 size-1.5 rounded-full bg-destructive" /></Button>
         <button className="hidden items-center gap-2 rounded-sm p-1 text-left hover:bg-muted sm:flex" aria-label="Открыть профиль"><span className="grid size-8 place-items-center rounded-sm bg-primary text-xs font-semibold text-primary-foreground">АК</span><span className="hidden xl:block"><span className="block text-xs font-medium">Алексей Крылов</span><span className="block text-[11px] text-muted-foreground">Оператор</span></span><ChevronDown className="size-3 text-muted-foreground" /></button>
       </header>
       <main className="mx-auto max-w-[1600px] p-4 md:p-6 lg:p-7">{children}</main>
+      <AIAssistantPanel />
     </div>
   </div>;
 }
