@@ -2,7 +2,7 @@ import { AlertCircle, Database } from "lucide-react";
 import type { AISource } from "@/lib/ai-assistant";
 import { cn } from "@/lib/utils";
 
-export type ChatMessage = { id: number; role: "user" | "assistant" | "error"; text: string; source?: AISource };
+export type ChatMessage = { id: number; role: "user" | "assistant" | "error"; text: string; source?: AISource | undefined };
 
 const sourceLabel: Record<AISource, string> = { record: "Источник: текущая карточка", results: "Источник: результаты текущего поиска" };
 
